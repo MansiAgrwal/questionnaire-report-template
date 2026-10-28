@@ -1,5 +1,5 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "questionnaire_id": "knowledge_demo",
   "instrument_version": "synthetic_v1",
   "config_sha256": "11937fa799defbfacc93e33b7fdf256b6ba966c31bb8f325ff688b64813272e0",
@@ -44,6 +44,7 @@
       "column": "q1",
       "raw": "A",
       "status": "valid",
+      "code": "A",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -52,6 +53,7 @@
       "column": "q2",
       "raw": "B",
       "status": "valid",
+      "code": "B",
       "mapped": "0",
       "scored": "0",
       "reversed": false
@@ -60,6 +62,7 @@
       "column": "q3",
       "raw": "A",
       "status": "valid",
+      "code": "A",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -68,6 +71,7 @@
       "column": "q4",
       "raw": "A",
       "status": "valid",
+      "code": "A",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -76,11 +80,13 @@
       "column": "q5",
       "raw": "B",
       "status": "valid",
+      "code": "B",
       "mapped": "0",
       "scored": "0",
       "reversed": false
     }
   },
+  "variable_trace": {},
   "sections": [],
   "section_trace": [],
   "output_stem": "report_80d58f9947808610"
