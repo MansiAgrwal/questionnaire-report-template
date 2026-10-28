@@ -1,8 +1,8 @@
 # Configurable questionnaire report template
 
-A standalone prototype for scoring **fixed-form quantitative questionnaires** and producing participant reports from CSV exports. Instruments, scoring, interpretation and conditional text are configured in JSON. The scoring engine does not invent item meanings, cut-offs, norms or advice.
+Scoring rules and participant reports for fixed-form questionnaires, defined in a JSON configuration instead of code. A researcher declares items, response codes, scales, scoring rules, conversions, cut-offs and report wording. The same engine then scores a CSV export and writes HTML, editable Word and JSON audit records. The engine does not invent item meanings, cut-offs, norms or advice.
 
-This is a working extension in scope from the study-specific `personalized-feedback-reports` project. It is a separate implementation supplied for review, not a published or clinically validated product. All included instruments and interpretation bands are invented demonstrations.
+The aim is a single engine that can be configured for many questionnaires a researcher may want to report on. Whether it achieves that is an empirical question, and it has not been tested yet: `VALIDATION_PLAN.md` describes how to measure the share of real instruments it can express. All included instruments, thresholds, norm tables and wording are invented demonstrations. This is a research prototype, not a clinically validated product.
 
 ## Quick start
 
@@ -11,76 +11,119 @@ Python 3.10 or later:
 ```bash
 python -m pip install -r requirements.txt
 python test_qreport.py
-python qreport.py --config examples/likert.json --data examples/likert.csv --out my_reports --docx
+python qreport.py --config examples/dynamic_text.json --data examples/dynamic_text.csv --out my_reports --docx
 ```
 
-Choose an empty output directory for each run. Omit `--docx` if you need only HTML and the JSON audit records. CSV/JSON/HTML scoring uses the Python standard library; Word output uses python-docx. The program makes no network calls and sends no reports or messages.
+Choose an empty output directory for each run. Omit `--docx` if you need only HTML and the JSON audit records. Scoring, HTML and JSON use the Python standard library; Word output uses python-docx. The program makes no network calls and sends no reports or messages.
 
-## What is supported
+## What a configuration can express
 
-- One row per participant; named column mappings and unique participant identifiers.
-- Numeric integer or continuous responses with declared bounds; explicit raw-code-to-score maps.
-- Reverse scoring using the declared scored bounds.
-- Sums, means, weighted sums and weighted means; overlapping subscales are allowed.
-- Positive affine conversions, such as multiplying a raw score by a fixed factor.
-- Complete scoring, or explicitly permitted proration with a minimum answered count and written justification. Proration in this prototype requires identical scored item bounds.
-- Contiguous, non-overlapping interpretation bands. All lower bounds are inclusive; upper bounds are exclusive except the last.
-- Literal feedback text for each band and conditional sections based on item or scale values. Conditions support `all`, `any`, `not` and six numeric comparison operators. An unknown input stays unknown under `not` and does not trigger a paragraph.
-- Eligibility requirements and band-triggered manual-review holds.
-- HTML, editable Word and machine-readable JSON outputs; input and configuration hashes and item-level scoring traces.
+**Responses.** One row per participant, with named column mappings and unique participant identifiers. Responses can be integer or continuous with declared bounds, or labelled codes mapped explicitly to scores. Items can be reverse-scored. Declared missing codes are kept distinct from invalid codes.
 
-## What an instrument author must supply
+**Other variables** (schema 1.1). Columns that are not items: numeric (for example age), categorical (for example sex) or 24-hour clock times. They can select norm tables, enter conditions and feed computed items.
 
-Copy the closest JSON example and provide the item column names, valid response codes, reversal rules, subscale membership, weights, missing-response policy, conversions, interpretation boundaries and approved wording. Include the instrument version and scoring/interpretation references. These definitions must be checked against the actual scoring manual and the intended population and language.
+**Computed items** (schema 1.1). An item can be calculated from other items and variables with addition, subtraction, multiplication, division, minimum, maximum, absolute value and minutes between two clock times (wrapping past midnight). The result can be mapped to a score through ordered intervals, with any boundary assigned to either side. This covers rules such as "sleep efficiency = hours asleep / time in bed; below 65% scores 3". A missing input leaves the computed item missing. An impossible calculation, such as division by zero, blocks the report.
 
-The prototype does not estimate reliability, establish construct validity, select clinical cut-offs, license questionnaire items, infer diagnoses, or decide whether feedback is appropriate. It does not currently implement demographic norm tables, IRT/Rasch scoring, adaptive tests, item-response-dependent branching scores, multi-informant reconciliation, longitudinal reliable-change indices, Excel/SPSS imports, a GUI, or imported Word-template replacement. Those require explicit additional implementations and validation. The included Word renderer supplies one editable report layout.
+**Scale scores.**
+- Sums, means, weighted sums and weighted means, with overlapping subscales allowed.
+- Count rules (schema 1.1): the number of items meeting a threshold, with optional per-item thresholds. Combined with conditions, this expresses rules such as "at least four items at 2 or above, including item 1 or item 2".
+- Positive linear conversions, such as multiplying by a fixed factor.
+- Lookup tables (schema 1.1): an exact table for every whole raw score, or an interval table. Separate tables can be chosen by group conditions on variables, for example age band and sex for norm-referenced T-scores. The raw score can be rounded half up or up before lookup. A table is chosen only when its group can be determined; otherwise the scale is left unscored with the reason recorded.
 
-## The four examples
+**Missing responses.** By default every item must be answered. Proration is allowed only with a minimum answered count and a written justification, and requires identical item bounds. Count scales always require every item.
 
-| Configuration | Purpose | Synthetic values |
+**Interpretation.** Contiguous, non-overlapping bands on the final score. A band can hold a report for human review. Eligibility requirements, such as a completion flag, block release when unmet.
+
+**Report text.** Each band has its own text. Conditional sections are combined with `all`, `any` and `not` over items, scales and variables, using three-valued logic: an unknown input never triggers a paragraph. Section text can include values filled from the record (schema 1.1):
+- the wording for the participant's response option;
+- the highest-rated item in a scale, with ties named together, resolved by configuration order, or withheld;
+- a scale's displayed score or band.
+
+If a value cannot be determined, the section is withheld and the reason recorded.
+
+**Outputs.** HTML, editable Word and JSON reports. The JSON records item-level transformations, computed values, variables, scoring decisions, the table used, section decisions, and input and configuration hashes.
+
+## What it cannot express yet
+
+- IRT or Rasch scoring and adaptive tests.
+- Skip logic, where later items depend on earlier answers.
+- Multi-informant reconciliation, and more than one row per participant.
+- Longitudinal reliable-change indices.
+- Calendar dates (clock times only), free-text responses and Excel or SPSS imports.
+- Imported Word templates; the engine supplies one editable layout.
+- Proration across items with different bounds.
+
+Each would need its own implementation and tests. The tool does not estimate reliability, establish validity, choose cut-offs, license items, infer diagnoses or decide whether feedback is appropriate.
+
+## Examples
+
+| Configuration | Demonstrates | Synthetic values |
 | --- | --- | --- |
-| `examples/likert.json` | Reverse-scored sum and mean, with conditional narrative | Four items, 0–4 |
+| `examples/likert.json` | Reverse-scored sum and mean, conditional narrative | Four items, 0–4 |
 | `examples/weighted_mean.json` | Categorical recoding and unequal weights | Four items, four labelled choices |
 | `examples/knowledge.json` | Keyed binary responses and percentage conversion | Five A/B-coded items |
 | `examples/prorated.json` | Weighted sum with an explicit missing-response rule | Four items, 1–5; at least three answered |
+| `examples/count_rule.json` | Count of items at threshold, per-item threshold, combined rule | Six items, 0–3 |
+| `examples/norm_table.json` | Prorated raw sum rounded up and converted by age- and sex-specific tables | Four items, 1–5; age, sex |
+| `examples/sleep_diary.json` | Clock times and durations computed into component scores, then summed | Bedtime, wake time, latency, hours, two items |
+| `examples/dynamic_text.json` | Response wording, the highest-rated item with tie rules, scores in sentences | One duration item, six rated reasons |
 
-Each configuration has a CSV example. `sample_outputs/` contains the resulting JSON audit files, HTML reports and two illustrative Word reports. These files contain no real participant information.
+Each configuration has a CSV example. `sample_outputs/` contains the resulting JSON audit files, 12 HTML reports and four Word reports (from the likert, prorated and dynamic_text examples). No real participant information is included.
 
 ## Read the output status
 
-`ready` means every configured scale could be scored under the supplied rules. `partial` means at least one scale was scored and another had insufficient answers. `unscored` means no scale could be scored. `blocked` means an invalid response or failed eligibility requirement prevents report release. `held_for_review` means a configured band requests human review. Only ready and partial records receive an HTML/Word report; other records receive an audit JSON record. Partial reports identify unscored scales instead of assigning a score of zero.
+`ready` means every configured scale could be scored under the supplied rules. `partial` means at least one scale was scored and another had insufficient answers. `unscored` means no scale could be scored. `blocked` means an invalid response, an invalid variable, an impossible computation or a failed eligibility requirement prevents report release. `held_for_review` means a configured band requests human review. Only ready and partial records receive an HTML/Word report; other records receive an audit JSON record. Partial reports identify unscored scales instead of assigning a score of zero.
 
-Prorated scores are labelled in the report. The software follows the configured rule; it cannot establish that proration is psychometrically justified. Band assignment and conditional text use unrounded decimal scores, which the JSON record preserves. Reports show each score rounded half up to the scale's `display_decimals` (default 2, trailing zeros removed). A score just below a band boundary can therefore display as the boundary value while sitting in the lower band, for example 7.999 shown as 8.
+Prorated scores are labelled in the report. The software follows the configured rule; it cannot establish that proration is justified, and the missing-data literature generally prefers other methods. Band assignment and conditions use unrounded scores, which the JSON record preserves. Reports show scores rounded half up to the scale's `display_decimals` (default 2, trailing zeros removed). A score just below a band boundary can therefore display as the boundary value while sitting in the lower band, for example 7.999 shown as 8.
 
 ## Verification completed
 
-`test_qreport.py` runs 25 tests. Four enumerate 2,209 synthetic response profiles and compare 2,663 scored scales with closed-form formulas; 171 profiles must remain unscored. The others cover invalid responses, exact band boundaries, column-order invariance, configuration errors, missing input columns, truncated CSV rows, displayed precision, proration of a weighted mean, all six comparison operators, the three-valued truth tables for `all`, `any` and `not`, duplicate participant IDs, release holds, HTML escaping and provenance. Results are in `validation_results.json`.
+`test_qreport.py` runs 39 tests; all pass (`validation_results.json`). Each scoring feature is compared with a calculation written separately in the test file:
+- **Original four configurations:** 2,209 enumerated response profiles; 2,663 scored scales checked and 171 profiles that must stay unscored.
+- **Count rule:** all 4,096 response profiles, including the combined rule.
+- **Lookup tables:**
+  - all 1,296 response-and-missingness patterns under each of nine age and sex combinations, including missing age or sex;
+  - every raw score through an interval table;
+  - half-up rounding before an exact table.
+- **Computed items:** 3,000 seeded random sleep-diary records, including missing values and zero time in bed, with interval boundaries and clock arithmetic across midnight checked separately.
+- **Dynamic text:** 250 records covering every rating pattern in each area and each tie rule.
+- **Other tests:** invalid inputs, configuration errors, truncated CSV rows, HTML escaping, provenance and release holds.
 
-These tests were created with the implementation, and the reference formulas restate the same rules, so they check consistency, not whether the rules are right. They are not externally reviewed scoring manuals. No external users, clinical outcomes or real-instrument narrative validity have been evaluated. The tests do not establish that the tool works for “mostly any questionnaire”.
+To check that the tests can fail, six deliberate errors were introduced into the engine one at a time. Five were caught. The sixth did not change behaviour: bins are searched in order, so a shared boundary always falls to the earlier bin. The tests execute 87% of the engine's statements and branches; most of the rest are configuration error messages.
 
-## Changes in 0.1.1
+These checks were written alongside the implementation. They show that the code follows its specification; they cannot show that a configured rule matches a real instrument's manual. No real instrument, external user, reviewer agreement or clinical outcome has been evaluated.
 
-Two defects in 0.1.0 were found in review; each now has a test that fails on 0.1.0.
+## Changes
 
-- **Truncated CSV rows.** A row with fewer fields than the header had its absent fields read as missing answers. Under a proration rule the record was prorated and released as `ready`. The batch now stops with an error and writes nothing, as it already did for absent columns.
-- **Displayed precision.** Reports printed exact decimal scores, such as 1.666666666666666666666666667 for a weighted mean. They now round for display, as described above. Scores, bands and decisions are unchanged; the configuration hashes of the examples are unchanged.
-- **Tests added** for paths 0.1.0 never exercised: the `any` operator, three of the six comparison operators (`eq`, `ne`, `lt`), the full three-valued truth tables, and proration of a mean.
+**0.2.0.** Schema 1.1 adds variables, computed items, count rules, lookup tables and filled section text. Schema 1.0 configurations are still accepted and give identical scores, bands and configuration hashes. The JSON records now also include the canonical response code and a variable trace.
+
+**0.1.1.** Two defects in 0.1.0 were found in review, and each now has a test that fails on 0.1.0:
+- **Truncated CSV rows.** A row with fewer fields than the header had its absent fields read as missing answers, so under a proration rule it was prorated and released as `ready`. The batch now stops and writes nothing.
+- **Unrounded scores.** Reports printed exact decimal scores, such as 1.666666666666666666666666667. They now round for display.
+
+Tests were also added for paths 0.1.0 never exercised: the `any` operator, the `eq`, `ne` and `lt` comparisons, the three-valued truth tables and proration of a mean.
 
 ## Adapting a configuration
 
-`examples/likert.json` is the starting template. Change identifiers and source columns; declare scoring and interpretation from the relevant manual; then add frozen reference cases to a separate validation file. Check lower and upper boundaries, each missing-response pattern, invalid codes and any conditional-message interactions before applying it to research data.
+Start from the example closest to your instrument and see `CONFIGURATION_GUIDE.md`. Declare scoring, conversion tables and interpretation from the instrument's manual, then add frozen reference cases. Check boundaries, each missing-response pattern, invalid codes, norm-group edges and conditional-message interactions before applying it to research data.
 
-Section text is literal. Band text permits only `{{score}}`, `{{band}}`, `{{answered}}` and `{{items}}`. No Python expressions are evaluated. Unexpected configuration fields and duplicate JSON keys are rejected.
+Band text permits only `{{score}}`, `{{band}}`, `{{answered}}` and `{{items}}`. Section text permits only tokens declared in its `fill`. No Python expressions are evaluated. Unexpected configuration fields and duplicate JSON keys are rejected.
 
-Report filenames use a hash of the participant ID. The participant ID remains in the report and audit record, so the outputs must be handled as participant data if you later use real identifiers. Hash-based filenames do not anonymise the report contents.
+Report filenames use a hash of the participant ID. The participant ID remains in the report and audit record, so outputs must be handled as participant data if you use real identifiers.
 
-## Publication status and related work
+## Related work
 
-General questionnaire scoring and automated feedback already exist. Relevant predecessors include [formr](https://doi.org/10.3758/s13428-019-01236-y), [Scorify](https://github.com/uwmadison-chm/scorify), and [ScoreMe's questionnaire schema](https://github.com/circadia-bio/ScoreMe/blob/main/docs/questionnaire-schema.md). No first-in-field or superiority claim is made. `VALIDATION_PLAN.md` describes the evidence needed for a fuller development and validation study.
+General questionnaire scoring and automated feedback already exist, for example:
+- [formr](https://doi.org/10.3758/s13428-019-01236-y) (automated feedback within a study framework);
+- [Scorify](https://github.com/uwmadison-chm/scorify) (configurable scoring of self-report questionnaires);
+- [ScoreMe's questionnaire schema](https://github.com/circadia-bio/ScoreMe/blob/main/docs/questionnaire-schema.md);
+- [PROscorer](https://cloud.r-project.org/web/packages/PROscorer/index.html) (scoring functions for specific patient-reported outcome measures).
+
+No first-in-field or superiority claim is made. `VALIDATION_PLAN.md` describes the evidence a comparison would need.
 
 ## Attribution
 
-The original study-specific workflow was described in Mansi Agarwal's [personalized-feedback-reports](https://github.com/MansiAgrwal/personalized-feedback-reports) repository. This new prototype, test suite and documentation were prepared with OpenAI Codex assistance at the researcher's request. Claude (Anthropic) reviewed version 0.1.0 and fixed the two defects listed under Changes in 0.1.1. Independent instrument-based validation remains necessary before participant use. No study-owned questionnaire items or original report templates are reproduced here.
+The original study-specific workflow is Mansi Agarwal's [personalized-feedback-reports](https://github.com/MansiAgrwal/personalized-feedback-reports). Version 0.1.0 of this prototype, its tests and documentation were prepared with OpenAI Codex assistance at the researcher's request. Claude (Anthropic) reviewed 0.1.0, fixed the defects listed under 0.1.1, and implemented and tested the schema 1.1 extensions in 0.2.0 at the researcher's request. Independent instrument-based validation remains necessary before participant use. No study-owned questionnaire items or report templates are reproduced here.
 
 ## License
 

@@ -2,13 +2,15 @@
 
 This is not human review, psychometric validation or a clinical effectiveness study.
 """
-import csv,io,itertools,json,tempfile,unittest
+import csv,io,itertools,json,math,random,tempfile,unittest
+from fractions import Fraction
 from copy import deepcopy
 from pathlib import Path
 from qreport import ReportEngine,ConfigurationError,DataError,render_html,load_config,score_rows,main
 from make_examples import configurations,bands
 
-COUNTS={'exhaustive_response_profiles':0,'scored_scale_comparisons':0,'unscorable_profiles_checked':0}
+COUNTS={'exhaustive_response_profiles':0,'scored_scale_comparisons':0,'unscorable_profiles_checked':0,
+        'count_rule_profiles':0,'lookup_records':0,'computed_item_records':0,'dynamic_text_records':0}
 
 def record(values):return dict(participant_id='TEST001',**{f'q{i+1}':v for i,v in enumerate(values)})
 
@@ -222,9 +224,266 @@ class ScoringChecks(unittest.TestCase):
             with self.assertRaises(DataError):main(['--config',str(cf),'--data',str(df),'--out',str(out)])
 
 
+
+def row_of(header, values):
+    return {h: ('' if v is None else str(v)) for h, v in zip(header, values)}
+
+
+def half_up(x):
+    """Round a nonnegative Fraction half up (written separately from the engine's Decimal rounding)."""
+    return math.floor(x + Fraction(1, 2))
+
+
+class ExtensionChecks(unittest.TestCase):
+    """Schema 1.1 features, each compared with a calculation written independently in this file."""
+
+    # ---------------------------------------------------------------- count rules
+    def test_exhaustive_count_rule_and_combined_condition(self):
+        e = ReportEngine(configurations()['count_rule'])
+        for v in itertools.product(range(4), repeat=6):
+            r = e.score(record(v))
+            count = sum(x >= 2 for x in v[:5]) + (v[5] >= 1)
+            self.assertEqual(r['scales'][0]['score_exact'], str(count))
+            self.assertEqual(r['scales'][0]['band']['id'], 'lower' if count < 4 else 'upper')
+            self.assertEqual(r['scales'][1]['score_exact'], str(sum(v)))
+            pattern = count >= 4 and (v[0] >= 2 or v[1] >= 2)
+            self.assertEqual(r['section_trace'][0]['decision'], 'included' if pattern else 'excluded')
+            COUNTS['count_rule_profiles'] += 1
+        r = e.score(record([3, None, 3, 3, 3, 3]))   # count needs every item; item 1 alone already satisfies the 'any'
+        self.assertEqual(r['scales'][0]['status'], 'unscored'); self.assertEqual(r['section_trace'][0]['decision'], 'withheld_unknown')
+
+    def test_count_configuration_errors(self):
+        changes = [lambda c: c['scales'][0].pop('criterion'),
+                   lambda c: c['scales'][0].update(missing_policy={'method': 'prorate', 'minimum_answered': 5, 'justification': 'x'}),
+                   lambda c: c['scales'][0].update(item_criteria={'zz': {'op': 'ge', 'value': 1}}),
+                   lambda c: c['scales'][0].update(criterion={'op': 'between', 'value': 1}),
+                   lambda c: c['scales'][1].update(criterion={'op': 'ge', 'value': 1})]
+        for change in changes:
+            c = configurations()['count_rule']; change(c)
+            with self.assertRaises(ConfigurationError): ReportEngine(c)
+
+    # ---------------------------------------------------------------- lookup tables
+    def test_exhaustive_norm_table_lookup(self):
+        from make_examples import NORM_GROUPS
+        e = ReportEngine(configurations()['norm_table'])
+        header = ['participant_id', 'age', 'sex', 'q1', 'q2', 'q3', 'q4']
+        groups = [(34, 'F'), (34, 'M'), (16, 'F'), (16, 'M'), (16, None), (40, None), (None, 'F'), (17, 'M'), (18, 'M')]
+        for (age, sex), v in itertools.product(groups, itertools.product([None, 1, 2, 3, 4, 5], repeat=4)):
+            r = e.score(row_of(header, ['T1', age, sex, *v])); s = r['scales'][0]
+            answered = [x for x in v if x is not None]
+            if age is None or (age >= 18 and sex is None):
+                gid = None
+            else:
+                gid = 'youth' if age < 18 else 'adult_female' if sex == 'F' else 'adult_male'
+            if len(answered) < 3:
+                self.assertEqual(s['status'], 'unscored'); self.assertIn('Too few', s['reason'])
+            elif gid is None:
+                self.assertEqual(s['status'], 'unscored'); self.assertIn('grouping variable', s['reason'])
+            else:
+                raw = math.ceil(Fraction(sum(answered) * 4, len(answered)))
+                mean, sd = NORM_GROUPS[gid]
+                t = half_up(50 + 10 * (raw - Fraction(str(mean))) / Fraction(str(sd)))
+                self.assertEqual((s['lookup']['table'], s['lookup']['raw_used'], s['score_exact']), (gid, str(raw), str(t)))
+                self.assertEqual(s['band']['id'], 'lower' if t < 60 else 'upper')
+                self.assertEqual(s['prorated'], len(answered) < 4)
+            COUNTS['lookup_records'] += 1
+
+    def interval_config(self, **lookup):
+        c = configurations()['norm_table']; s = c['scales'][0]
+        s.update(method='mean', missing_policy={'method': 'complete'}, display_decimals=2,
+                 lookup=dict(reference='Invented interval table.', **lookup), bands=[])
+        s.pop('interpretation_reference')
+        return c
+
+    def test_interval_table_boundaries_and_half_up_rounding(self):
+        rows = [dict(lower=1, upper=2, score=10), dict(lower=2, upper=3, score=20), dict(lower=3, upper=4, score=30),
+                dict(lower=4, upper=5, upper_inclusive=True, score=40)]
+        e = ReportEngine(self.interval_config(tables=[dict(id='all', type='interval', rows=rows)]))
+        header = ['participant_id', 'age', 'sex', 'q1', 'q2', 'q3', 'q4']
+        for v in itertools.product(range(1, 6), repeat=4):
+            mean = Fraction(sum(v), 4)
+            expected = 40 if mean == 5 else 10 * math.floor(mean)
+            self.assertEqual(e.score(row_of(header, ['T', 30, 'F', *v]))['scales'][0]['score_exact'], str(expected))
+            COUNTS['lookup_records'] += 1
+        exact_rows = [dict(raw=r, score=100 + r) for r in range(1, 6)]
+        e = ReportEngine(self.interval_config(round_raw='half_up', tables=[dict(id='all', type='exact', rows=exact_rows)]))
+        for v in itertools.product(range(1, 6), repeat=4):
+            used = half_up(Fraction(sum(v), 4))
+            s = e.score(row_of(header, ['T', 30, 'F', *v]))['scales'][0]
+            self.assertEqual((s['lookup']['raw_used'], s['score_exact']), (str(used), str(100 + used)))
+            COUNTS['lookup_records'] += 1
+
+    def test_lookup_no_matching_table(self):
+        c = configurations()['norm_table']; c['scales'][0]['lookup']['tables'] = c['scales'][0]['lookup']['tables'][:2]
+        header = ['participant_id', 'age', 'sex', 'q1', 'q2', 'q3', 'q4']
+        s = ReportEngine(c).score(row_of(header, ['T', 15, 'F', 3, 3, 3, 3]))['scales'][0]
+        self.assertEqual(s['status'], 'unscored'); self.assertIn('No conversion table', s['reason'])
+
+    def test_lookup_configuration_errors(self):
+        def table(c): return c['scales'][0]['lookup']['tables'][0]
+        changes = [lambda c: table(c)['rows'].pop(5),                                               # gap
+                   lambda c: table(c)['rows'].append(dict(table(c)['rows'][0])),                     # duplicate raw
+                   lambda c: table(c).update(type='lookup'),
+                   lambda c: c['scales'][0]['lookup'].update(round_raw='none'),                     # prorated raw is not whole
+                   lambda c: c['scales'][0].update(multiplier=2),
+                   lambda c: table(c).update(group={'item': 'q1', 'op': 'ge', 'value': 1}),         # groups use variables only
+                   lambda c: table(c).update(group={'variable': 'sex', 'op': 'eq', 'value': 'X'}),  # unknown category
+                   lambda c: table(c).update(group={'variable': 'sex', 'op': 'gt', 'value': 'F'}),
+                   lambda c: c['variables'][0].update(max=120),                                      # 99 is a missing code
+                   lambda c: c['variables'].append(dict(id='age2', column='q1', type='numeric', min=0, max=5)),
+                   lambda c: c.update(schema_version='1.0')]
+        for change in changes:
+            c = configurations()['norm_table']; change(c)
+            with self.assertRaises(ConfigurationError): ReportEngine(c)
+        c = self.interval_config(tables=[dict(id='a', type='interval', rows=[dict(lower=1, upper=3, score=1), dict(lower=3, upper=4.5, upper_inclusive=True, score=2)])])
+        with self.assertRaises(ConfigurationError): ReportEngine(c)                                  # does not reach 5
+
+    # ---------------------------------------------------------------- computed items
+    def test_sleep_diary_against_independent_calculation(self):
+        e = ReportEngine(configurations()['sleep_diary']); rng = random.Random(20261028)
+        header = ['participant_id', 'bedtime', 'waketime', 'latency_min', 'sleep_hours', 'q1', 'q2']
+        maybe = lambda x: None if rng.random() < .08 else x
+        for n in range(3000):
+            bed, wake = rng.randrange(1440), rng.randrange(1440)
+            if n % 100 == 0: wake = bed                                                  # zero minutes in bed
+            hours = maybe(Fraction(rng.randrange(0, 65), 4)); lat = maybe(rng.randrange(0, 241))
+            q = [maybe(rng.randrange(4)), maybe(rng.randrange(4))]
+            values = ['S', f'{bed // 60}:{bed % 60:02d}', f'{wake // 60:02d}:{wake % 60:02d}', lat,
+                      None if hours is None else str(float(hours)), *q]
+            r = e.score(row_of(header, values)); s = r['scales'][0]
+            in_bed = (wake - bed) % 1440
+            if hours is not None and in_bed == 0:
+                self.assertEqual(r['status'], 'blocked'); self.assertIn('Division by zero', r['reasons'][0])
+                COUNTS['computed_item_records'] += 1; continue
+            comps = []
+            comps.append(None if hours is None else 3 if hours < 5 else 2 if hours < 6 else 1 if hours <= 7 else 0)
+            comps.append(None if lat is None else 0 if lat <= 15 else 1 if lat <= 30 else 2 if lat <= 60 else 3)
+            if hours is None:
+                comps.append(None)
+            else:
+                eff = hours * 60 / in_bed * 100
+                comps.append(3 if eff < 65 else 2 if eff < 75 else 1 if eff < 85 else 0)
+            comps += q
+            self.assertEqual(r['item_trace']['in_bed']['scored'], str(in_bed))
+            if None in comps:
+                self.assertEqual(s['status'], 'unscored')
+            else:
+                self.assertEqual(s['score_exact'], str(sum(comps)))
+                self.assertEqual(s['band']['id'], 'lower' if sum(comps) < 6 else 'upper')
+            COUNTS['computed_item_records'] += 1
+
+    def test_bin_boundaries_and_clock_wraparound(self):
+        e = ReportEngine(configurations()['sleep_diary'])
+        base = dict(participant_id='B', bedtime='23:00', waketime='07:00', latency_min='15', q1='0', q2='0')
+        for hours, comp in [('4.99', '3'), ('5', '2'), ('5.99', '2'), ('6', '1'), ('7', '1'), ('7.01', '0')]:
+            self.assertEqual(e.score(dict(base, sleep_hours=hours))['item_trace']['c_duration']['scored'], comp)
+        for lat, comp in [('15', '0'), ('16', '1'), ('30', '1'), ('31', '2'), ('60', '2'), ('61', '3')]:
+            self.assertEqual(e.score(dict(base, latency_min=lat, sleep_hours='7'))['item_trace']['c_latency']['scored'], comp)
+        for bed, wake, minutes in [('23:00', '07:00', '480'), ('00:00', '23:59', '1439'), ('23:59', '00:00', '1'), ('7:05', '07:04', '1439')]:
+            self.assertEqual(e.score(dict(base, bedtime=bed, waketime=wake, sleep_hours='7'))['item_trace']['in_bed']['scored'], minutes)
+
+    def test_invalid_inputs_to_computed_items_block_release(self):
+        e = ReportEngine(configurations()['sleep_diary'])
+        base = dict(participant_id='B', bedtime='23:00', waketime='07:00', latency_min='15', sleep_hours='7', q1='0', q2='0')
+        for change in [dict(bedtime='24:00'), dict(waketime='7.30'), dict(bedtime='noon'), dict(latency_min='241'), dict(sleep_hours='-1')]:
+            r = e.score(dict(base, **change)); self.assertEqual(r['status'], 'blocked', change)
+            with self.assertRaises(DataError): render_html(r)
+        r = e.score(dict(base, bedtime=''))                                              # missing, not invalid
+        self.assertEqual(r['status'], 'unscored'); self.assertEqual(r['item_trace']['c_efficiency']['status'], 'missing')
+        c = configurations()['sleep_diary']; c['derived_items'][0]['bins'][0]['lower'] = 1    # closed lower end
+        r = ReportEngine(c).score(dict(base, sleep_hours='0.5'))
+        self.assertEqual(r['status'], 'blocked'); self.assertIn('outside the configured bins', r['reasons'][0])
+
+    def test_computed_item_configuration_errors(self):
+        def d(c, i): return c['derived_items'][i]
+        deep = {'const': 1}
+        for _ in range(40): deep = {'op': 'abs', 'args': [deep]}
+        changes = [lambda c: d(c, 3).update(compute={'item': 'later'}),
+                   lambda c: d(c, 0).update(compute={'item': 'c_efficiency'}),                   # defined later
+                   lambda c: d(c, 0).update(compute={'op': 'pow', 'args': [{'const': 1}, {'const': 2}]}),
+                   lambda c: d(c, 0).update(compute={'op': 'sub', 'args': [{'const': 1}]}),
+                   lambda c: d(c, 0).update(compute=deep),
+                   lambda c: d(c, 0)['bins'].pop(1),                                                 # gap between bins
+                   lambda c: d(c, 0)['bins'][0].update(value=4),                                     # outside 0-3
+                   lambda c: d(c, 0).update(id='q1'),
+                   lambda c: c['variables'][0].update(type='date')]
+        for change in changes:
+            c = configurations()['sleep_diary']; change(c)
+            with self.assertRaises(ConfigurationError): ReportEngine(c)
+        c = configurations()['sleep_diary']
+        c['variables'].append(dict(id='group', column='group', type='categorical', codes=['a', 'b']))
+        c['derived_items'][0]['compute'] = {'variable': 'group'}
+        with self.assertRaises(ConfigurationError): ReportEngine(c)
+
+    # ---------------------------------------------------------------- dynamic report text
+    def test_exhaustive_dynamic_text(self):
+        e = ReportEngine(configurations()['dynamic_text'])
+        header = ['participant_id', 'duration', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6']
+        labels = ['Example reason A1', 'Example reason A2', 'Example reason A3', 'Example reason B1', 'Example reason B2', 'Example reason B3']
+        lengths = {1: 'less than a month', 2: 'one to six months', 3: 'six to twelve months', 4: 'more than a year'}
+        def join(names): return names[0] if len(names) == 1 else ', '.join(names[:-1]) + ' and ' + names[-1]
+        cases = [(a, (1, 1, 1)) for a in itertools.product(range(1, 6), repeat=3)] + [((1, 1, 1), b) for b in itertools.product(range(1, 6), repeat=3)]
+        for n, (a, b) in enumerate(cases):
+            duration = [None, 1, 2, 3, 4][n % 5]
+            r = e.score(row_of(header, ['D', duration, *a, *b]))
+            texts = {s['id']: s['text'] for s in r['sections']}; decisions = {t['id']: t['decision'] for t in r['section_trace']}
+            if duration is None:
+                self.assertEqual(decisions['duration_text'], 'withheld_unknown')
+            else:
+                self.assertEqual(texts['duration_text'], f'You told us this has lasted {lengths[duration]}.')
+            if Fraction(sum(a), 3) >= 3:
+                top = [labels[i] for i in range(3) if a[i] == max(a)]
+                self.assertEqual(texts['top_a'], f'In area A, the reason you rated highest was {join(top)}.')
+            else:
+                self.assertEqual(decisions['top_a'], 'excluded')
+            if Fraction(sum(b), 3) >= 3:
+                top = [labels[3 + i] for i in range(3) if b[i] == max(b)]
+                if len(top) > 1:
+                    self.assertEqual(decisions['top_b'], 'withheld_unknown')
+                else:
+                    self.assertEqual(texts['top_b'], f'In area B, the reason you rated highest was {top[0]}.')
+            else:
+                self.assertEqual(decisions['top_b'], 'excluded')
+            mean = Fraction(sum(a), 3)
+            score = r['scales'][0]['score_display']
+            self.assertEqual(Fraction(score), Fraction(half_up(mean * 100), 100))
+            band = 'Upper example band' if mean >= 3 else 'Lower example band'
+            self.assertEqual(texts['summary'], f'Your area A score was {score} ({band}).')
+            COUNTS['dynamic_text_records'] += 1
+
+    def test_first_tie_rule_and_escaping(self):
+        c = configurations()['dynamic_text']
+        c['sections'][1]['fill']['top']['ties'] = 'first'; c['items'][1]['label'] = '<b>reason</b> & more'
+        r = ReportEngine(c).score(row_of(['participant_id', 'duration', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6'], ['E', 2, 5, 3, 5, 1, 1, 1]))
+        self.assertEqual(r['sections'][1]['text'], 'In area A, the reason you rated highest was <b>reason</b> & more.')
+        h = render_html(r); self.assertIn('&lt;b&gt;reason&lt;/b&gt; &amp; more', h); self.assertNotIn('<b>reason', h)
+
+    def test_dynamic_text_configuration_errors(self):
+        def sec(c, i): return c['sections'][i]
+        changes = [lambda c: sec(c, 0).update(text='Lasted {{length}} and {{other}}.'),                  # undeclared token
+                   lambda c: sec(c, 0).update(text='No token here.'),                                    # unused fill
+                   lambda c: sec(c, 1)['fill']['top'].update(ties='random'),
+                   lambda c: c['items'][1].pop('label'),                                                # top_items needs labels
+                   lambda c: c['items'][0]['response_labels'].pop('4'),                                 # every code labelled
+                   lambda c: c['items'][0]['response_labels'].update({'5': 'x'}),
+                   lambda c: sec(c, 0).update(fill={'length': {'response_label': 'r1'}}),               # r1 has no labels
+                   lambda c: sec(c, 3)['fill'].update(score={'score': 'nope'}),
+                   lambda c: c.update(schema_version='1.0')]
+        for change in changes:
+            c = configurations()['dynamic_text']; change(c)
+            with self.assertRaises(ConfigurationError): ReportEngine(c)
+
+    def test_schema_1_0_examples_unchanged(self):
+        for name in ('likert', 'weighted_mean', 'knowledge', 'prorated'):
+            c = configurations()[name]; self.assertEqual(c['schema_version'], '1.0')
+            for field, value in [('variables', []), ('derived_items', [])]:
+                bad = deepcopy(c); bad[field] = value
+                with self.assertRaises(ConfigurationError): ReportEngine(bad)
+
+
 if __name__=='__main__':
     import platform,time
-    start=time.perf_counter();suite=unittest.defaultTestLoader.loadTestsFromTestCase(ScoringChecks)
+    start=time.perf_counter();suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(k) for k in (ScoringChecks,ExtensionChecks)])
     result=unittest.TextTestRunner(verbosity=2).run(suite)
     from qreport import VERSION
     summary=dict(engine_version=VERSION,python=platform.python_version(),tests_run=result.testsRun,

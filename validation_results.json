@@ -1,12 +1,16 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "python": "3.13.16",
-  "tests_run": 25,
+  "tests_run": 39,
   "failures": 0,
   "errors": 0,
-  "elapsed_seconds": 0.19757828799998833,
+  "elapsed_seconds": 1.4882704639999247,
   "exhaustive_response_profiles": 2209,
   "scored_scale_comparisons": 2663,
   "unscorable_profiles_checked": 171,
+  "count_rule_profiles": 4096,
+  "lookup_records": 12914,
+  "computed_item_records": 3000,
+  "dynamic_text_records": 250,
   "scope": "Invented fixed-form instruments; computational verification only; no human or clinical validation."
 }
