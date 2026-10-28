@@ -1,5 +1,5 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "questionnaire_id": "prorated_demo",
   "instrument_version": "synthetic_v1",
   "config_sha256": "b82e04faa27a48ad099beaded05bc562c53c66371658d74b541b44e583544925",
@@ -46,6 +46,7 @@
       "column": "q1",
       "raw": "5",
       "status": "valid",
+      "code": "5",
       "mapped": "5",
       "scored": "5",
       "reversed": false
@@ -59,6 +60,7 @@
       "column": "q3",
       "raw": "1",
       "status": "valid",
+      "code": "1",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -67,11 +69,13 @@
       "column": "q4",
       "raw": "3",
       "status": "valid",
+      "code": "3",
       "mapped": "3",
       "scored": "3",
       "reversed": false
     }
   },
+  "variable_trace": {},
   "sections": [],
   "section_trace": [],
   "output_stem": "report_1999484eff5bf252"
