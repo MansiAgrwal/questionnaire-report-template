@@ -1,0 +1,115 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "sleep_diary_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "626e79d4fe9f3b6f0b53bd8d0ee95f7ef542636d164421b5a925db4a03bbfb20",
+  "participant_id": "DEMO602",
+  "title": "Synthetic sleep diary example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "global",
+      "label": "Example global score",
+      "method": "sum",
+      "item_ids": [
+        "c_duration",
+        "c_latency",
+        "c_efficiency",
+        "q1",
+        "q2"
+      ],
+      "answered": 5,
+      "expected": 5,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 11.0,
+      "score_exact": "11",
+      "score_display": "11",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example bands; no population norms."
+      },
+      "text": "The configured example score is 11. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "11"
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "c_duration": {
+      "derived": true,
+      "status": "valid",
+      "computed": "4.5",
+      "scored": "3"
+    },
+    "c_latency": {
+      "derived": true,
+      "status": "valid",
+      "computed": "45",
+      "scored": "2"
+    },
+    "in_bed": {
+      "derived": true,
+      "status": "valid",
+      "computed": "345",
+      "scored": "345"
+    },
+    "c_efficiency": {
+      "derived": true,
+      "status": "valid",
+      "computed": "78.26086956521739130434782609",
+      "scored": "1"
+    }
+  },
+  "variable_trace": {
+    "bedtime": {
+      "column": "bedtime",
+      "raw": "01:15",
+      "status": "valid",
+      "value": "75"
+    },
+    "waketime": {
+      "column": "waketime",
+      "raw": "07:00",
+      "status": "valid",
+      "value": "420"
+    },
+    "latency": {
+      "column": "latency_min",
+      "raw": "45",
+      "status": "valid",
+      "value": "45"
+    },
+    "sleep_hours": {
+      "column": "sleep_hours",
+      "raw": "4.5",
+      "status": "valid",
+      "value": "4.5"
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_a94353d07532c8b8"
+}

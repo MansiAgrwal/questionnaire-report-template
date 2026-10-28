@@ -1,0 +1,114 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "sleep_diary_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "626e79d4fe9f3b6f0b53bd8d0ee95f7ef542636d164421b5a925db4a03bbfb20",
+  "participant_id": "DEMO603",
+  "title": "Synthetic sleep diary example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "blocked",
+  "reasons": [
+    "Invalid computed item c_efficiency: Division by zero."
+  ],
+  "scales": [
+    {
+      "id": "global",
+      "label": "Example global score",
+      "method": "sum",
+      "item_ids": [
+        "c_duration",
+        "c_latency",
+        "c_efficiency",
+        "q1",
+        "q2"
+      ],
+      "answered": 4,
+      "expected": 5,
+      "missing": [],
+      "invalid": [
+        "c_efficiency"
+      ],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Invalid item response; scale withheld."
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "0",
+      "status": "valid",
+      "code": "0",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "0",
+      "status": "valid",
+      "code": "0",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    },
+    "c_duration": {
+      "derived": true,
+      "status": "valid",
+      "computed": "7",
+      "scored": "1"
+    },
+    "c_latency": {
+      "derived": true,
+      "status": "valid",
+      "computed": "10",
+      "scored": "0"
+    },
+    "in_bed": {
+      "derived": true,
+      "status": "valid",
+      "computed": "0",
+      "scored": "0"
+    },
+    "c_efficiency": {
+      "derived": true,
+      "status": "invalid",
+      "reason": "Division by zero."
+    }
+  },
+  "variable_trace": {
+    "bedtime": {
+      "column": "bedtime",
+      "raw": "22:00",
+      "status": "valid",
+      "value": "1320"
+    },
+    "waketime": {
+      "column": "waketime",
+      "raw": "22:00",
+      "status": "valid",
+      "value": "1320"
+    },
+    "latency": {
+      "column": "latency_min",
+      "raw": "10",
+      "status": "valid",
+      "value": "10"
+    },
+    "sleep_hours": {
+      "column": "sleep_hours",
+      "raw": "7",
+      "status": "valid",
+      "value": "7"
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_f798480566ecff42"
+}
