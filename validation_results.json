@@ -1,0 +1,12 @@
+{
+  "engine_version": "0.1.1",
+  "python": "3.13.16",
+  "tests_run": 25,
+  "failures": 0,
+  "errors": 0,
+  "elapsed_seconds": 0.19757828799998833,
+  "exhaustive_response_profiles": 2209,
+  "scored_scale_comparisons": 2663,
+  "unscorable_profiles_checked": 171,
+  "scope": "Invented fixed-form instruments; computational verification only; no human or clinical validation."
+}
