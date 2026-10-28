@@ -1,0 +1,71 @@
+{
+  "engine_version": "0.1.1",
+  "questionnaire_id": "prorated_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "b82e04faa27a48ad099beaded05bc562c53c66371658d74b541b44e583544925",
+  "participant_id": "DEMO302",
+  "title": "Synthetic routine checklist example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "unscored",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "routine",
+      "label": "Example weighted total",
+      "method": "weighted_sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 2,
+      "expected": 4,
+      "missing": [
+        "q1",
+        "q2"
+      ],
+      "invalid": [],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Too few answered items for the configured scoring rule."
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "NA",
+      "status": "missing"
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "NA",
+      "status": "missing"
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "1",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "3",
+      "status": "valid",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_c15d33ac65cd218c"
+}

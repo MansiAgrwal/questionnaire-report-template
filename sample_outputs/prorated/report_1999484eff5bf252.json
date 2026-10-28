@@ -1,0 +1,78 @@
+{
+  "engine_version": "0.1.1",
+  "questionnaire_id": "prorated_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "b82e04faa27a48ad099beaded05bc562c53c66371658d74b541b44e583544925",
+  "participant_id": "DEMO301",
+  "title": "Synthetic routine checklist example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "routine",
+      "label": "Example weighted total",
+      "method": "weighted_sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 3,
+      "expected": 4,
+      "missing": [
+        "q2"
+      ],
+      "invalid": [],
+      "status": "scored",
+      "score": 18.0,
+      "score_exact": "18",
+      "score_display": "18",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example bands; no population norms."
+      },
+      "text": "The configured example score is 18. It falls in the Upper example band.",
+      "prorated": true,
+      "proration_justification": "This invented demonstration explicitly permits weight-adjusted proration when at least three items are answered.",
+      "raw_score_exact": "18"
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "5",
+      "status": "valid",
+      "mapped": "5",
+      "scored": "5",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "NA",
+      "status": "missing"
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "1",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "3",
+      "status": "valid",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_1999484eff5bf252"
+}
