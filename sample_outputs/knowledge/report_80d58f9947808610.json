@@ -1,0 +1,87 @@
+{
+  "engine_version": "0.1.1",
+  "questionnaire_id": "knowledge_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "11937fa799defbfacc93e33b7fdf256b6ba966c31bb8f325ff688b64813272e0",
+  "participant_id": "DEMO201",
+  "title": "Synthetic knowledge scoring example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "percent",
+      "label": "Example percentage",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "answered": 5,
+      "expected": 5,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 60.0,
+      "score_exact": "60",
+      "score_display": "60",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example threshold; not a pass standard."
+      },
+      "text": "The configured example score is 60. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "3"
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "A",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "B",
+      "status": "valid",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "A",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "A",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q5": {
+      "column": "q5",
+      "raw": "B",
+      "status": "valid",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_80d58f9947808610"
+}
