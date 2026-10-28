@@ -1,0 +1,179 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "dynamic_text_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "75497a6d9b9702c3f2bbcdbe5e805119262b330db25c2eda6068196b959c416e",
+  "participant_id": "DEMO702",
+  "title": "Synthetic dynamic feedback example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "area_a",
+      "label": "Example area A",
+      "method": "mean",
+      "item_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "answered": 3,
+      "expected": 3,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 1.3333333333333333,
+      "score_exact": "1.333333333333333333333333333",
+      "score_display": "1.33",
+      "band": {
+        "id": "lower",
+        "label": "Lower example band",
+        "source": "Invented example threshold."
+      },
+      "text": "The configured example score is 1.33. It falls in the Lower example band.",
+      "prorated": false,
+      "raw_score_exact": "1.333333333333333333333333333"
+    },
+    {
+      "id": "area_b",
+      "label": "Example area B",
+      "method": "mean",
+      "item_ids": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "answered": 3,
+      "expected": 3,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 3.3333333333333335,
+      "score_exact": "3.333333333333333333333333333",
+      "score_display": "3.33",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example threshold."
+      },
+      "text": "The configured example score is 3.33. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "3.333333333333333333333333333"
+    }
+  ],
+  "item_trace": {
+    "duration": {
+      "column": "duration",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "r1": {
+      "column": "r1",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "r2": {
+      "column": "r2",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "r3": {
+      "column": "r3",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "r4": {
+      "column": "r4",
+      "raw": "4",
+      "status": "valid",
+      "code": "4",
+      "mapped": "4",
+      "scored": "4",
+      "reversed": false
+    },
+    "r5": {
+      "column": "r5",
+      "raw": "4",
+      "status": "valid",
+      "code": "4",
+      "mapped": "4",
+      "scored": "4",
+      "reversed": false
+    },
+    "r6": {
+      "column": "r6",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    }
+  },
+  "variable_trace": {},
+  "sections": [
+    {
+      "id": "duration_text",
+      "title": "Example duration sentence",
+      "text": "You told us this has lasted less than a month.",
+      "source": "Invented wording for each response option."
+    },
+    {
+      "id": "summary",
+      "title": "Example summary",
+      "text": "Your area A score was 1.33 (Lower example band).",
+      "source": "Invented summary sentence."
+    }
+  ],
+  "section_trace": [
+    {
+      "id": "duration_text",
+      "source": "Invented wording for each response option.",
+      "fill": {
+        "length": "less than a month"
+      },
+      "decision": "included"
+    },
+    {
+      "id": "top_a",
+      "source": "Invented rule: name the highest-rated item; name all tied items.",
+      "decision": "excluded"
+    },
+    {
+      "id": "top_b",
+      "source": "Invented rule: name the highest-rated item; withhold the sentence when items tie.",
+      "fill": {
+        "top": null
+      },
+      "decision": "withheld_unknown"
+    },
+    {
+      "id": "summary",
+      "source": "Invented summary sentence.",
+      "fill": {
+        "score": "1.33",
+        "band": "Lower example band"
+      },
+      "decision": "included"
+    }
+  ],
+  "output_stem": "report_183514e4724eb276"
+}

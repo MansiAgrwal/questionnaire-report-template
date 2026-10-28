@@ -1,0 +1,21 @@
+{
+  "engine_version": "0.2.0",
+  "config_sha256": "75497a6d9b9702c3f2bbcdbe5e805119262b330db25c2eda6068196b959c416e",
+  "input_sha256": "f91fc377f0e6816792caabff3f703673dace16fb49ac53ff835aad78c21920c9",
+  "records": 2,
+  "status_counts": {
+    "ready": 2
+  },
+  "outputs": [
+    {
+      "participant_id": "DEMO701",
+      "status": "ready",
+      "stem": "report_de8663059179e105"
+    },
+    {
+      "participant_id": "DEMO702",
+      "status": "ready",
+      "stem": "report_183514e4724eb276"
+    }
+  ]
+}
