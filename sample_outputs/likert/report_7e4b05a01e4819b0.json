@@ -1,0 +1,118 @@
+{
+  "engine_version": "0.1.1",
+  "questionnaire_id": "likert_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "823791768db1b4a05a9bea6c55a68b86b71fdf80fb6d5e83f7c61f86ade0d997",
+  "participant_id": "DEMO001",
+  "title": "Synthetic learning routine example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "total",
+      "label": "Example total",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 4,
+      "expected": 4,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 10.0,
+      "score_exact": "10",
+      "score_display": "10",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example bands; no population norms."
+      },
+      "text": "The configured example score is 10. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "10"
+    },
+    {
+      "id": "average",
+      "label": "Example average",
+      "method": "mean",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 4,
+      "expected": 4,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 2.5,
+      "score_exact": "2.5",
+      "score_display": "2.5",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example bands; no population norms."
+      },
+      "text": "The configured example score is 2.5. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "2.5"
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "1",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "2",
+      "status": "valid",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": true
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "3",
+      "status": "valid",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "4",
+      "status": "valid",
+      "mapped": "4",
+      "scored": "4",
+      "reversed": false
+    }
+  },
+  "sections": [
+    {
+      "id": "context_message",
+      "title": "Example conditional message",
+      "text": "This paragraph appears only when the total is at least eight and the first item is at most one.",
+      "source": "Invented cross-score demonstration rule."
+    }
+  ],
+  "section_trace": [
+    {
+      "id": "context_message",
+      "decision": "included",
+      "source": "Invented cross-score demonstration rule."
+    }
+  ],
+  "output_stem": "report_7e4b05a01e4819b0"
+}

@@ -1,0 +1,107 @@
+{
+  "engine_version": "0.1.1",
+  "questionnaire_id": "likert_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "823791768db1b4a05a9bea6c55a68b86b71fdf80fb6d5e83f7c61f86ade0d997",
+  "participant_id": "DEMO003",
+  "title": "Synthetic learning routine example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "blocked",
+  "reasons": [
+    "Invalid response in q3: Response outside configured bounds."
+  ],
+  "scales": [
+    {
+      "id": "total",
+      "label": "Example total",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 3,
+      "expected": 4,
+      "missing": [],
+      "invalid": [
+        "q3"
+      ],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Invalid item response; scale withheld."
+    },
+    {
+      "id": "average",
+      "label": "Example average",
+      "method": "mean",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 3,
+      "expected": 4,
+      "missing": [],
+      "invalid": [
+        "q3"
+      ],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Invalid item response; scale withheld."
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "0",
+      "status": "valid",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "1",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "3",
+      "reversed": true
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "999",
+      "status": "invalid",
+      "reason": "Response outside configured bounds."
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "1",
+      "status": "valid",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    }
+  },
+  "sections": [],
+  "section_trace": [
+    {
+      "id": "context_message",
+      "decision": "withheld_unknown",
+      "source": "Invented cross-score demonstration rule."
+    }
+  ],
+  "output_stem": "report_5cca6320800107aa"
+}

@@ -1,0 +1,28 @@
+{
+  "engine_version": "0.1.1",
+  "config_sha256": "823791768db1b4a05a9bea6c55a68b86b71fdf80fb6d5e83f7c61f86ade0d997",
+  "input_sha256": "7cdcf269c6c32506a0a4ed46b1c32cc30454476352ec38e8748e5a93623dcc9c",
+  "records": 3,
+  "status_counts": {
+    "ready": 1,
+    "unscored": 1,
+    "blocked": 1
+  },
+  "outputs": [
+    {
+      "participant_id": "DEMO001",
+      "status": "ready",
+      "stem": "report_7e4b05a01e4819b0"
+    },
+    {
+      "participant_id": "DEMO002",
+      "status": "unscored",
+      "stem": "report_c88579249744a75c"
+    },
+    {
+      "participant_id": "DEMO003",
+      "status": "blocked",
+      "stem": "report_5cca6320800107aa"
+    }
+  ]
+}
