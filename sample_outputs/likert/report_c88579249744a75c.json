@@ -1,5 +1,5 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "questionnaire_id": "likert_demo",
   "instrument_version": "synthetic_v1",
   "config_sha256": "823791768db1b4a05a9bea6c55a68b86b71fdf80fb6d5e83f7c61f86ade0d997",
@@ -66,6 +66,7 @@
       "column": "q1",
       "raw": "0",
       "status": "valid",
+      "code": "0",
       "mapped": "0",
       "scored": "0",
       "reversed": false
@@ -79,6 +80,7 @@
       "column": "q3",
       "raw": "1",
       "status": "valid",
+      "code": "1",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -87,17 +89,19 @@
       "column": "q4",
       "raw": "2",
       "status": "valid",
+      "code": "2",
       "mapped": "2",
       "scored": "2",
       "reversed": false
     }
   },
+  "variable_trace": {},
   "sections": [],
   "section_trace": [
     {
       "id": "context_message",
-      "decision": "withheld_unknown",
-      "source": "Invented cross-score demonstration rule."
+      "source": "Invented cross-score demonstration rule.",
+      "decision": "withheld_unknown"
     }
   ],
   "output_stem": "report_c88579249744a75c"

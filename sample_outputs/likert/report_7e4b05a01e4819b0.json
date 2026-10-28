@@ -1,5 +1,5 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "questionnaire_id": "likert_demo",
   "instrument_version": "synthetic_v1",
   "config_sha256": "823791768db1b4a05a9bea6c55a68b86b71fdf80fb6d5e83f7c61f86ade0d997",
@@ -70,6 +70,7 @@
       "column": "q1",
       "raw": "1",
       "status": "valid",
+      "code": "1",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -78,6 +79,7 @@
       "column": "q2",
       "raw": "2",
       "status": "valid",
+      "code": "2",
       "mapped": "2",
       "scored": "2",
       "reversed": true
@@ -86,6 +88,7 @@
       "column": "q3",
       "raw": "3",
       "status": "valid",
+      "code": "3",
       "mapped": "3",
       "scored": "3",
       "reversed": false
@@ -94,11 +97,13 @@
       "column": "q4",
       "raw": "4",
       "status": "valid",
+      "code": "4",
       "mapped": "4",
       "scored": "4",
       "reversed": false
     }
   },
+  "variable_trace": {},
   "sections": [
     {
       "id": "context_message",
@@ -110,8 +115,8 @@
   "section_trace": [
     {
       "id": "context_message",
-      "decision": "included",
-      "source": "Invented cross-score demonstration rule."
+      "source": "Invented cross-score demonstration rule.",
+      "decision": "included"
     }
   ],
   "output_stem": "report_7e4b05a01e4819b0"
