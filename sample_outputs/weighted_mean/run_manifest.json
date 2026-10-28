@@ -1,0 +1,16 @@
+{
+  "engine_version": "0.1.1",
+  "config_sha256": "925b2bc4e969e736b9cb5acd5228bc4d577888b14f834ed6d0b6270f049e1a19",
+  "input_sha256": "3f941f203ff45354c82f775fc0d1f98fd6f39050ee101edcd92e0bdd6831d49a",
+  "records": 1,
+  "status_counts": {
+    "ready": 1
+  },
+  "outputs": [
+    {
+      "participant_id": "DEMO101",
+      "status": "ready",
+      "stem": "report_3a8609ba763032c0"
+    }
+  ]
+}
