@@ -1,5 +1,5 @@
 {
-  "engine_version": "0.1.1",
+  "engine_version": "0.2.0",
   "questionnaire_id": "weighted_mean_demo",
   "instrument_version": "synthetic_v1",
   "config_sha256": "925b2bc4e969e736b9cb5acd5228bc4d577888b14f834ed6d0b6270f049e1a19",
@@ -43,6 +43,7 @@
       "column": "q1",
       "raw": "never",
       "status": "valid",
+      "code": "never",
       "mapped": "0",
       "scored": "0",
       "reversed": false
@@ -51,6 +52,7 @@
       "column": "q2",
       "raw": "sometimes",
       "status": "valid",
+      "code": "sometimes",
       "mapped": "1",
       "scored": "1",
       "reversed": false
@@ -59,6 +61,7 @@
       "column": "q3",
       "raw": "often",
       "status": "valid",
+      "code": "often",
       "mapped": "2",
       "scored": "2",
       "reversed": false
@@ -67,11 +70,13 @@
       "column": "q4",
       "raw": "always",
       "status": "valid",
+      "code": "always",
       "mapped": "3",
       "scored": "3",
       "reversed": false
     }
   },
+  "variable_trace": {},
   "sections": [],
   "section_trace": [],
   "output_stem": "report_3a8609ba763032c0"
