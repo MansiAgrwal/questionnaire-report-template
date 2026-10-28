@@ -1,0 +1,101 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "norm_table_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "90f35061d86b4689dc8515ce53d08d26c9d2b990ab58e37f4313f454b04b7aff",
+  "participant_id": "DEMO501",
+  "title": "Synthetic norm-referenced example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "t_score",
+      "label": "Example converted score",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 4,
+      "expected": 4,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 60.0,
+      "score_exact": "60",
+      "score_display": "60",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example cut-off on the converted score."
+      },
+      "text": "The configured example score is 60. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "14",
+      "lookup": {
+        "table": "adult_female",
+        "raw_used": "14",
+        "reference": "Invented conversion tables; not a published norm."
+      }
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "4",
+      "status": "valid",
+      "code": "4",
+      "mapped": "4",
+      "scored": "4",
+      "reversed": false
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "5",
+      "status": "valid",
+      "code": "5",
+      "mapped": "5",
+      "scored": "5",
+      "reversed": false
+    }
+  },
+  "variable_trace": {
+    "age": {
+      "column": "age",
+      "raw": "34",
+      "status": "valid",
+      "value": "34"
+    },
+    "sex": {
+      "column": "sex",
+      "raw": "F",
+      "status": "valid",
+      "value": "F"
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_72a3150b4b7caecc"
+}

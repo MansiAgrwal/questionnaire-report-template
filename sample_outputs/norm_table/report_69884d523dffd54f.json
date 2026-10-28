@@ -1,0 +1,100 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "norm_table_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "90f35061d86b4689dc8515ce53d08d26c9d2b990ab58e37f4313f454b04b7aff",
+  "participant_id": "DEMO502",
+  "title": "Synthetic norm-referenced example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "t_score",
+      "label": "Example converted score",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 3,
+      "expected": 4,
+      "missing": [
+        "q2"
+      ],
+      "invalid": [],
+      "status": "scored",
+      "score": 36.0,
+      "score_exact": "36",
+      "score_display": "36",
+      "band": {
+        "id": "lower",
+        "label": "Lower example band",
+        "source": "Invented example cut-off on the converted score."
+      },
+      "text": "The configured example score is 36. It falls in the Lower example band.",
+      "prorated": true,
+      "proration_justification": "This invented demonstration prorates when at least three items are answered and rounds the raw score up before conversion.",
+      "raw_score_exact": "6.666666666666666666666666665",
+      "lookup": {
+        "table": "youth",
+        "raw_used": "7",
+        "reference": "Invented conversion tables; not a published norm."
+      }
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "NA",
+      "status": "missing"
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    }
+  },
+  "variable_trace": {
+    "age": {
+      "column": "age",
+      "raw": "16",
+      "status": "valid",
+      "value": "16"
+    },
+    "sex": {
+      "column": "sex",
+      "raw": "M",
+      "status": "valid",
+      "value": "M"
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_69884d523dffd54f"
+}

@@ -1,0 +1,92 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "norm_table_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "90f35061d86b4689dc8515ce53d08d26c9d2b990ab58e37f4313f454b04b7aff",
+  "participant_id": "DEMO503",
+  "title": "Synthetic norm-referenced example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "unscored",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "t_score",
+      "label": "Example converted score",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "answered": 4,
+      "expected": 4,
+      "missing": [],
+      "invalid": [],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "raw_score_exact": "12",
+      "reason": "The conversion table could not be chosen because a grouping variable is missing."
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    }
+  },
+  "variable_trace": {
+    "age": {
+      "column": "age",
+      "raw": "40",
+      "status": "valid",
+      "value": "40"
+    },
+    "sex": {
+      "column": "sex",
+      "raw": "NA",
+      "status": "missing"
+    }
+  },
+  "sections": [],
+  "section_trace": [],
+  "output_stem": "report_81871382b52341bf"
+}
