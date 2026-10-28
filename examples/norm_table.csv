@@ -1,0 +1,4 @@
+participant_id,age,sex,q1,q2,q3,q4
+DEMO501,34,F,3,4,2,5
+DEMO502,16,M,2,NA,1,2
+DEMO503,40,NA,3,3,3,3

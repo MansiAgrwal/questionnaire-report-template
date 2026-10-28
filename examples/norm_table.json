@@ -1,0 +1,358 @@
+{
+  "schema_version": "1.1",
+  "questionnaire_id": "norm_table_demo",
+  "title": "Synthetic norm-referenced example",
+  "instrument_version": "synthetic_v1",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "id_column": "participant_id",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "missing_codes": [
+    "",
+    null,
+    "NA",
+    99
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "column": "q1",
+      "min": 1,
+      "max": 5
+    },
+    {
+      "id": "q2",
+      "column": "q2",
+      "min": 1,
+      "max": 5
+    },
+    {
+      "id": "q3",
+      "column": "q3",
+      "min": 1,
+      "max": 5
+    },
+    {
+      "id": "q4",
+      "column": "q4",
+      "min": 1,
+      "max": 5
+    }
+  ],
+  "scales": [
+    {
+      "id": "t_score",
+      "label": "Example converted score",
+      "items": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "method": "sum",
+      "missing_policy": {
+        "method": "prorate",
+        "minimum_answered": 3,
+        "justification": "This invented demonstration prorates when at least three items are answered and rounds the raw score up before conversion."
+      },
+      "lookup": {
+        "reference": "Invented conversion tables; not a published norm.",
+        "round_raw": "up",
+        "tables": [
+          {
+            "id": "adult_female",
+            "group": {
+              "all": [
+                {
+                  "variable": "age",
+                  "op": "ge",
+                  "value": 18
+                },
+                {
+                  "variable": "sex",
+                  "op": "eq",
+                  "value": "F"
+                }
+              ]
+            },
+            "type": "exact",
+            "rows": [
+              {
+                "raw": 4,
+                "score": 27
+              },
+              {
+                "raw": 5,
+                "score": 30
+              },
+              {
+                "raw": 6,
+                "score": 33
+              },
+              {
+                "raw": 7,
+                "score": 37
+              },
+              {
+                "raw": 8,
+                "score": 40
+              },
+              {
+                "raw": 9,
+                "score": 43
+              },
+              {
+                "raw": 10,
+                "score": 47
+              },
+              {
+                "raw": 11,
+                "score": 50
+              },
+              {
+                "raw": 12,
+                "score": 53
+              },
+              {
+                "raw": 13,
+                "score": 57
+              },
+              {
+                "raw": 14,
+                "score": 60
+              },
+              {
+                "raw": 15,
+                "score": 63
+              },
+              {
+                "raw": 16,
+                "score": 67
+              },
+              {
+                "raw": 17,
+                "score": 70
+              },
+              {
+                "raw": 18,
+                "score": 73
+              },
+              {
+                "raw": 19,
+                "score": 77
+              },
+              {
+                "raw": 20,
+                "score": 80
+              }
+            ]
+          },
+          {
+            "id": "adult_male",
+            "group": {
+              "all": [
+                {
+                  "variable": "age",
+                  "op": "ge",
+                  "value": 18
+                },
+                {
+                  "variable": "sex",
+                  "op": "eq",
+                  "value": "M"
+                }
+              ]
+            },
+            "type": "exact",
+            "rows": [
+              {
+                "raw": 4,
+                "score": 31
+              },
+              {
+                "raw": 5,
+                "score": 34
+              },
+              {
+                "raw": 6,
+                "score": 38
+              },
+              {
+                "raw": 7,
+                "score": 41
+              },
+              {
+                "raw": 8,
+                "score": 44
+              },
+              {
+                "raw": 9,
+                "score": 47
+              },
+              {
+                "raw": 10,
+                "score": 50
+              },
+              {
+                "raw": 11,
+                "score": 53
+              },
+              {
+                "raw": 12,
+                "score": 56
+              },
+              {
+                "raw": 13,
+                "score": 59
+              },
+              {
+                "raw": 14,
+                "score": 63
+              },
+              {
+                "raw": 15,
+                "score": 66
+              },
+              {
+                "raw": 16,
+                "score": 69
+              },
+              {
+                "raw": 17,
+                "score": 72
+              },
+              {
+                "raw": 18,
+                "score": 75
+              },
+              {
+                "raw": 19,
+                "score": 78
+              },
+              {
+                "raw": 20,
+                "score": 81
+              }
+            ]
+          },
+          {
+            "id": "youth",
+            "group": {
+              "variable": "age",
+              "op": "lt",
+              "value": 18
+            },
+            "type": "exact",
+            "rows": [
+              {
+                "raw": 4,
+                "score": 27
+              },
+              {
+                "raw": 5,
+                "score": 30
+              },
+              {
+                "raw": 6,
+                "score": 33
+              },
+              {
+                "raw": 7,
+                "score": 36
+              },
+              {
+                "raw": 8,
+                "score": 39
+              },
+              {
+                "raw": 9,
+                "score": 41
+              },
+              {
+                "raw": 10,
+                "score": 44
+              },
+              {
+                "raw": 11,
+                "score": 47
+              },
+              {
+                "raw": 12,
+                "score": 50
+              },
+              {
+                "raw": 13,
+                "score": 53
+              },
+              {
+                "raw": 14,
+                "score": 56
+              },
+              {
+                "raw": 15,
+                "score": 59
+              },
+              {
+                "raw": 16,
+                "score": 61
+              },
+              {
+                "raw": 17,
+                "score": 64
+              },
+              {
+                "raw": 18,
+                "score": 67
+              },
+              {
+                "raw": 19,
+                "score": 70
+              },
+              {
+                "raw": 20,
+                "score": 73
+              }
+            ]
+          }
+        ]
+      },
+      "display_decimals": 0,
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 27,
+          "upper": 60,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 60,
+          "upper": 81,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example cut-off on the converted score."
+    }
+  ],
+  "variables": [
+    {
+      "id": "age",
+      "column": "age",
+      "type": "numeric",
+      "min": 12,
+      "max": 90
+    },
+    {
+      "id": "sex",
+      "column": "sex",
+      "type": "categorical",
+      "codes": [
+        "F",
+        "M"
+      ]
+    }
+  ]
+}

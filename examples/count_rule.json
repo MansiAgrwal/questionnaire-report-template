@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.1",
+  "questionnaire_id": "count_rule_demo",
+  "title": "Synthetic symptom count example",
+  "instrument_version": "synthetic_v1",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "id_column": "participant_id",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "missing_codes": [
+    "",
+    null,
+    "NA",
+    99
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "column": "q1",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q2",
+      "column": "q2",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q3",
+      "column": "q3",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q4",
+      "column": "q4",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q5",
+      "column": "q5",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q6",
+      "column": "q6",
+      "min": 0,
+      "max": 3
+    }
+  ],
+  "scales": [
+    {
+      "id": "count",
+      "label": "Example count of items at threshold",
+      "items": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "method": "count",
+      "criterion": {
+        "op": "ge",
+        "value": 2
+      },
+      "item_criteria": {
+        "q6": {
+          "op": "ge",
+          "value": 1
+        }
+      },
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 0,
+          "upper": 4,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 4,
+          "upper": 6,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example threshold; not a diagnostic algorithm."
+    },
+    {
+      "id": "total",
+      "label": "Example total",
+      "items": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "method": "sum",
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 0,
+          "upper": 9,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 9,
+          "upper": 18,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example bands; no population norms."
+    }
+  ],
+  "sections": [
+    {
+      "id": "pattern",
+      "title": "Example combined rule",
+      "text": "This paragraph appears when at least four items meet their threshold and item 1 or item 2 is one of them.",
+      "source": "Invented rule with the structure of a count-based screening algorithm.",
+      "when": {
+        "all": [
+          {
+            "scale": "count",
+            "op": "ge",
+            "value": 4
+          },
+          {
+            "any": [
+              {
+                "item": "q1",
+                "op": "ge",
+                "value": 2
+              },
+              {
+                "item": "q2",
+                "op": "ge",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

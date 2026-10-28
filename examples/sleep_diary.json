@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.1",
+  "questionnaire_id": "sleep_diary_demo",
+  "title": "Synthetic sleep diary example",
+  "instrument_version": "synthetic_v1",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "id_column": "participant_id",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "missing_codes": [
+    "",
+    null,
+    "NA"
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "column": "q1",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "id": "q2",
+      "column": "q2",
+      "min": 0,
+      "max": 3
+    }
+  ],
+  "scales": [
+    {
+      "id": "global",
+      "label": "Example global score",
+      "items": [
+        "c_duration",
+        "c_latency",
+        "c_efficiency",
+        "q1",
+        "q2"
+      ],
+      "method": "sum",
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 0,
+          "upper": 6,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 6,
+          "upper": 15,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example bands; no population norms."
+    }
+  ],
+  "variables": [
+    {
+      "id": "bedtime",
+      "column": "bedtime",
+      "type": "time"
+    },
+    {
+      "id": "waketime",
+      "column": "waketime",
+      "type": "time"
+    },
+    {
+      "id": "latency",
+      "column": "latency_min",
+      "type": "numeric",
+      "min": 0,
+      "max": 240
+    },
+    {
+      "id": "sleep_hours",
+      "column": "sleep_hours",
+      "type": "numeric",
+      "min": 0,
+      "max": 16,
+      "allow_decimal": true
+    }
+  ],
+  "derived_items": [
+    {
+      "id": "c_duration",
+      "label": "Sleep duration component",
+      "compute": {
+        "variable": "sleep_hours"
+      },
+      "min": 0,
+      "max": 3,
+      "bins": [
+        {
+          "lower": null,
+          "upper": 5,
+          "value": 3
+        },
+        {
+          "lower": 5,
+          "upper": 6,
+          "value": 2
+        },
+        {
+          "lower": 6,
+          "upper": 7,
+          "upper_inclusive": true,
+          "value": 1
+        },
+        {
+          "lower": 7,
+          "upper": null,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "c_latency",
+      "label": "Sleep latency component",
+      "compute": {
+        "variable": "latency"
+      },
+      "min": 0,
+      "max": 3,
+      "bins": [
+        {
+          "lower": null,
+          "upper": 16,
+          "value": 0
+        },
+        {
+          "lower": 16,
+          "upper": 31,
+          "value": 1
+        },
+        {
+          "lower": 31,
+          "upper": 61,
+          "value": 2
+        },
+        {
+          "lower": 61,
+          "upper": null,
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "in_bed",
+      "label": "Minutes in bed",
+      "compute": {
+        "op": "minutes_between",
+        "args": [
+          {
+            "variable": "bedtime"
+          },
+          {
+            "variable": "waketime"
+          }
+        ]
+      },
+      "min": 0,
+      "max": 1439
+    },
+    {
+      "id": "c_efficiency",
+      "label": "Sleep efficiency component",
+      "compute": {
+        "op": "mul",
+        "args": [
+          {
+            "op": "div",
+            "args": [
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "variable": "sleep_hours"
+                  },
+                  {
+                    "const": 60
+                  }
+                ]
+              },
+              {
+                "item": "in_bed"
+              }
+            ]
+          },
+          {
+            "const": 100
+          }
+        ]
+      },
+      "min": 0,
+      "max": 3,
+      "bins": [
+        {
+          "lower": null,
+          "upper": 65,
+          "value": 3
+        },
+        {
+          "lower": 65,
+          "upper": 75,
+          "value": 2
+        },
+        {
+          "lower": 75,
+          "upper": 85,
+          "value": 1
+        },
+        {
+          "lower": 85,
+          "upper": null,
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

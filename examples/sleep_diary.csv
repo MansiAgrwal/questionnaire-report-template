@@ -1,0 +1,4 @@
+participant_id,bedtime,waketime,latency_min,sleep_hours,q1,q2
+DEMO601,23:30,06:45,20,6.5,1,2
+DEMO602,01:15,07:00,45,4.5,2,3
+DEMO603,22:00,22:00,10,7,0,0

@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.1",
+  "questionnaire_id": "dynamic_text_demo",
+  "title": "Synthetic dynamic feedback example",
+  "instrument_version": "synthetic_v1",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "id_column": "participant_id",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "missing_codes": [
+    "",
+    null,
+    "NA",
+    99
+  ],
+  "items": [
+    {
+      "id": "duration",
+      "column": "duration",
+      "min": 1,
+      "max": 4,
+      "response_labels": {
+        "1": "less than a month",
+        "2": "one to six months",
+        "3": "six to twelve months",
+        "4": "more than a year"
+      }
+    },
+    {
+      "id": "r1",
+      "column": "r1",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason A1"
+    },
+    {
+      "id": "r2",
+      "column": "r2",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason A2"
+    },
+    {
+      "id": "r3",
+      "column": "r3",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason A3"
+    },
+    {
+      "id": "r4",
+      "column": "r4",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason B1"
+    },
+    {
+      "id": "r5",
+      "column": "r5",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason B2"
+    },
+    {
+      "id": "r6",
+      "column": "r6",
+      "min": 1,
+      "max": 5,
+      "label": "Example reason B3"
+    }
+  ],
+  "scales": [
+    {
+      "id": "area_a",
+      "label": "Example area A",
+      "items": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "method": "mean",
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 1,
+          "upper": 3,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 3,
+          "upper": 5,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example threshold."
+    },
+    {
+      "id": "area_b",
+      "label": "Example area B",
+      "items": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "method": "mean",
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 1,
+          "upper": 3,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 3,
+          "upper": 5,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example threshold."
+    }
+  ],
+  "sections": [
+    {
+      "id": "duration_text",
+      "title": "Example duration sentence",
+      "text": "You told us this has lasted {{length}}.",
+      "source": "Invented wording for each response option.",
+      "fill": {
+        "length": {
+          "response_label": "duration"
+        }
+      }
+    },
+    {
+      "id": "top_a",
+      "title": "Example area A",
+      "text": "In area A, the reason you rated highest was {{top}}.",
+      "source": "Invented rule: name the highest-rated item; name all tied items.",
+      "when": {
+        "scale": "area_a",
+        "op": "ge",
+        "value": 3
+      },
+      "fill": {
+        "top": {
+          "top_items": "area_a",
+          "ties": "all"
+        }
+      }
+    },
+    {
+      "id": "top_b",
+      "title": "Example area B",
+      "text": "In area B, the reason you rated highest was {{top}}.",
+      "source": "Invented rule: name the highest-rated item; withhold the sentence when items tie.",
+      "when": {
+        "scale": "area_b",
+        "op": "ge",
+        "value": 3
+      },
+      "fill": {
+        "top": {
+          "top_items": "area_b",
+          "ties": "withhold"
+        }
+      }
+    },
+    {
+      "id": "summary",
+      "title": "Example summary",
+      "text": "Your area A score was {{score}} ({{band}}).",
+      "source": "Invented summary sentence.",
+      "fill": {
+        "score": {
+          "score": "area_a"
+        },
+        "band": {
+          "band": "area_a"
+        }
+      }
+    }
+  ]
+}
