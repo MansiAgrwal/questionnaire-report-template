@@ -1,0 +1,130 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "count_rule_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "d5ea15b1a00ee554c220bbc524e47990605ea0f246130ae3ab18df19192033a6",
+  "participant_id": "DEMO403",
+  "title": "Synthetic symptom count example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "unscored",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "count",
+      "label": "Example count of items at threshold",
+      "method": "count",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "answered": 5,
+      "expected": 6,
+      "missing": [
+        "q2"
+      ],
+      "invalid": [],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Too few answered items for the configured scoring rule."
+    },
+    {
+      "id": "total",
+      "label": "Example total",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "answered": 5,
+      "expected": 6,
+      "missing": [
+        "q2"
+      ],
+      "invalid": [],
+      "status": "unscored",
+      "score": null,
+      "score_exact": null,
+      "score_display": null,
+      "band": null,
+      "text": "",
+      "prorated": false,
+      "reason": "Too few answered items for the configured scoring rule."
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "NA",
+      "status": "missing"
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q5": {
+      "column": "q5",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q6": {
+      "column": "q6",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    }
+  },
+  "variable_trace": {},
+  "sections": [],
+  "section_trace": [
+    {
+      "id": "pattern",
+      "source": "Invented rule with the structure of a count-based screening algorithm.",
+      "decision": "withheld_unknown"
+    }
+  ],
+  "output_stem": "report_b1f710a96d916e11"
+}

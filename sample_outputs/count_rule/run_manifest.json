@@ -1,0 +1,27 @@
+{
+  "engine_version": "0.2.0",
+  "config_sha256": "d5ea15b1a00ee554c220bbc524e47990605ea0f246130ae3ab18df19192033a6",
+  "input_sha256": "b868a218add9f666e6ad6c4519803703cd8f3732ebba20f9239bc3994b9661c4",
+  "records": 3,
+  "status_counts": {
+    "ready": 2,
+    "unscored": 1
+  },
+  "outputs": [
+    {
+      "participant_id": "DEMO401",
+      "status": "ready",
+      "stem": "report_cdcc44d5bb842a57"
+    },
+    {
+      "participant_id": "DEMO402",
+      "status": "ready",
+      "stem": "report_d2a7d77ae2a6a0fd"
+    },
+    {
+      "participant_id": "DEMO403",
+      "status": "unscored",
+      "stem": "report_b1f710a96d916e11"
+    }
+  ]
+}

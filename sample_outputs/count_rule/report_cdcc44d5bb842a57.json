@@ -1,0 +1,151 @@
+{
+  "engine_version": "0.2.0",
+  "questionnaire_id": "count_rule_demo",
+  "instrument_version": "synthetic_v1",
+  "config_sha256": "d5ea15b1a00ee554c220bbc524e47990605ea0f246130ae3ab18df19192033a6",
+  "participant_id": "DEMO401",
+  "title": "Synthetic symptom count example",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "status": "ready",
+  "reasons": [],
+  "scales": [
+    {
+      "id": "count",
+      "label": "Example count of items at threshold",
+      "method": "count",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "answered": 6,
+      "expected": 6,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 4.0,
+      "score_exact": "4",
+      "score_display": "4",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example threshold; not a diagnostic algorithm."
+      },
+      "text": "The configured example score is 4. It falls in the Upper example band.",
+      "prorated": false,
+      "items_meeting_criterion": [
+        "q1",
+        "q3",
+        "q4",
+        "q6"
+      ],
+      "raw_score_exact": "4"
+    },
+    {
+      "id": "total",
+      "label": "Example total",
+      "method": "sum",
+      "item_ids": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "answered": 6,
+      "expected": 6,
+      "missing": [],
+      "invalid": [],
+      "status": "scored",
+      "score": 9.0,
+      "score_exact": "9",
+      "score_display": "9",
+      "band": {
+        "id": "upper",
+        "label": "Upper example band",
+        "source": "Invented example bands; no population norms."
+      },
+      "text": "The configured example score is 9. It falls in the Upper example band.",
+      "prorated": false,
+      "raw_score_exact": "9"
+    }
+  ],
+  "item_trace": {
+    "q1": {
+      "column": "q1",
+      "raw": "3",
+      "status": "valid",
+      "code": "3",
+      "mapped": "3",
+      "scored": "3",
+      "reversed": false
+    },
+    "q2": {
+      "column": "q2",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    },
+    "q3": {
+      "column": "q3",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q4": {
+      "column": "q4",
+      "raw": "2",
+      "status": "valid",
+      "code": "2",
+      "mapped": "2",
+      "scored": "2",
+      "reversed": false
+    },
+    "q5": {
+      "column": "q5",
+      "raw": "0",
+      "status": "valid",
+      "code": "0",
+      "mapped": "0",
+      "scored": "0",
+      "reversed": false
+    },
+    "q6": {
+      "column": "q6",
+      "raw": "1",
+      "status": "valid",
+      "code": "1",
+      "mapped": "1",
+      "scored": "1",
+      "reversed": false
+    }
+  },
+  "variable_trace": {},
+  "sections": [
+    {
+      "id": "pattern",
+      "title": "Example combined rule",
+      "text": "This paragraph appears when at least four items meet their threshold and item 1 or item 2 is one of them.",
+      "source": "Invented rule with the structure of a count-based screening algorithm."
+    }
+  ],
+  "section_trace": [
+    {
+      "id": "pattern",
+      "source": "Invented rule with the structure of a count-based screening algorithm.",
+      "decision": "included"
+    }
+  ],
+  "output_stem": "report_cdcc44d5bb842a57"
+}
