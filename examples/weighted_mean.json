@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "questionnaire_id": "weighted_mean_demo",
+  "title": "Synthetic service experience example",
+  "instrument_version": "synthetic_v1",
+  "scoring_reference": "Invented demonstration rules supplied in this package. Not a validated questionnaire.",
+  "id_column": "participant_id",
+  "introduction": "This report demonstrates the software using invented items and thresholds. The example bands have no clinical or normative meaning.",
+  "missing_codes": [
+    "",
+    null,
+    "NA",
+    99
+  ],
+  "items": [
+    {
+      "id": "q1",
+      "column": "q1",
+      "min": 0,
+      "max": 3,
+      "recode": {
+        "never": 0,
+        "sometimes": 1,
+        "often": 2,
+        "always": 3
+      }
+    },
+    {
+      "id": "q2",
+      "column": "q2",
+      "min": 0,
+      "max": 3,
+      "recode": {
+        "never": 0,
+        "sometimes": 1,
+        "often": 2,
+        "always": 3
+      }
+    },
+    {
+      "id": "q3",
+      "column": "q3",
+      "min": 0,
+      "max": 3,
+      "recode": {
+        "never": 0,
+        "sometimes": 1,
+        "often": 2,
+        "always": 3
+      }
+    },
+    {
+      "id": "q4",
+      "column": "q4",
+      "min": 0,
+      "max": 3,
+      "recode": {
+        "never": 0,
+        "sometimes": 1,
+        "often": 2,
+        "always": 3
+      }
+    }
+  ],
+  "scales": [
+    {
+      "id": "service",
+      "label": "Example weighted average",
+      "items": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "method": "weighted_mean",
+      "weights": {
+        "q1": 1,
+        "q2": 2,
+        "q3": 1,
+        "q4": 2
+      },
+      "bands": [
+        {
+          "id": "lower",
+          "label": "Lower example band",
+          "lower": 0,
+          "upper": 1.5,
+          "upper_inclusive": false,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        },
+        {
+          "id": "upper",
+          "label": "Upper example band",
+          "lower": 1.5,
+          "upper": 3,
+          "upper_inclusive": true,
+          "text": "The configured example score is {{score}}. It falls in the {{band}}."
+        }
+      ],
+      "interpretation_reference": "Invented example bands; no population norms."
+    }
+  ]
+}

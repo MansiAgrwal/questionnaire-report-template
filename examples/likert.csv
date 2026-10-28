@@ -1,0 +1,4 @@
+participant_id,q1,q2,q3,q4
+DEMO001,1,2,3,4
+DEMO002,0,NA,1,2
+DEMO003,0,1,999,1
